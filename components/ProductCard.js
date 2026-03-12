@@ -3,14 +3,32 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 /*
-Displays one product inside the product list
+Maps seeded product names to bundled local images.
+These are used when the database image field is empty.
 */
+const defaultProductImages = {
+  "Gentle Foaming Cleanser": require("../assets/products/gentle-foaming-cleanser.png"),
+  "Vitamin C Serum": require("../assets/products/vitamin-c-serum.png"),
+  "Hyaluronic Acid Moisturizer": require("../assets/products/hyaluronic-acid-moisturizer.png"),
+  "Retinol Night Cream": require("../assets/products/retinol-night-cream.png"),
+  "LED Face Mask": require("../assets/products/led-face-mask.png"),
+  "Exfoliating Toner": require("../assets/products/exfoliating-toner.png"),
+};
+
 export default function ProductCard({ product, deleteProduct }) {
+  /*
+  If the user uploaded an image, use that.
+  Otherwise, try to use a bundled default image based on product name.
+  */
+  const imageSource = product.image
+    ? { uri: product.image }
+    : defaultProductImages[product.name];
+
   return (
     <View style={styles.card}>
       <View style={styles.imageWrapper}>
-        {product.image ? (
-          <Image source={{ uri: product.image }} style={styles.image} />
+        {imageSource ? (
+          <Image source={imageSource} style={styles.image} />
         ) : (
           <View style={styles.placeholderImage} />
         )}
