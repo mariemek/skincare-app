@@ -32,6 +32,14 @@ Create and manage a weekly skincare routine by assigning products to specific da
 View skincare statistics and helpful skincare tips.
 
 ---
+## App Preview
+
+/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.38 PM.png
+/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.43 PM.png
+/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.48 PM.png
+/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.52 PM.png
+
+---
 
 ## Tech Stack
 
@@ -53,11 +61,3 @@ git clone https://github.com/mariemek/skincare-app.git
 
 
 ---
-
-## App Preview
-
-| Home | Products | Schedule | Profile |
-|------|------|------|------|
-| ![](/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.38 PM.png
-) | ![](/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.43 PM.png
-) | ![](/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.48 PM.png) | ![](/Users/mariemekourouss/Desktop/Screenshot 2026-03-12 at 4.53.52 PM.png) |
