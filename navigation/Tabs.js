@@ -1,4 +1,5 @@
 import React from "react";
+import { useColorScheme } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 
@@ -7,9 +8,14 @@ import ProductsScreen from "../screens/ProductsScreen";
 import ScheduleScreen from "../screens/ScheduleScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 
+import { lightColors, darkColors } from "../theme/colors";
+
 const Tab = createBottomTabNavigator();
 
 export default function Tabs() {
+  const scheme = useColorScheme();
+  const colors = scheme === "dark" ? darkColors : lightColors;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -20,16 +26,16 @@ export default function Tabs() {
           height: 68,
           paddingTop: 10,
           borderTopWidth: 0.5,
-          borderTopColor: "#F1D5E0",
-          backgroundColor: "#FFF8FB",
+          borderTopColor: colors.border,
+          backgroundColor: colors.background,
         },
 
         tabBarItemStyle: {
           paddingVertical: 4,
         },
 
-        tabBarActiveTintColor: "#D4668F",
-        tabBarInactiveTintColor: "#C9AAB5",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.subtext,
 
         tabBarIcon: ({ color }) => {
           let iconName;

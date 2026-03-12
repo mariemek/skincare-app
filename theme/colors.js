@@ -1,0 +1,31 @@
+export const lightColors = {
+  background: "#FFF8FB",
+  card: "#FFFFFF",
+  text: "#2F2A2D",
+  subtext: "#9A7F89",
+  border: "#F1D5E0",
+  primary: "#D4668F",
+  softPink: "#FDF0F5",
+  badgeText: "#FFFFFF",
+  progressBackground: "#EFCEDB",
+  emptyText: "#D2A8B6",
+  inputBackground: "#FDF0F5",
+  placeholder: "#C7A8B5",
+  destructive: "#EF5B6C",
+};
+
+export const darkColors = {
+  background: "#121214",
+  card: "#1C1C1F",
+  text: "#F5F5F7",
+  subtext: "#B7B7BD",
+  border: "#2C2C31",
+  primary: "#FF7DA8",
+  softPink: "#1F1A1D",
+  badgeText: "#FFFFFF",
+  progressBackground: "#3A2A31",
+  emptyText: "#8E7C85",
+  inputBackground: "#1F1F23",
+  placeholder: "#8C8690",
+  destructive: "#FF7B88",
+};

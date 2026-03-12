@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  useColorScheme,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 
 import { db } from "../database/db";
+import { lightColors, darkColors } from "../theme/colors";
 
 export default function ProfileScreen() {
+  const scheme = useColorScheme();
+  const colors = scheme === "dark" ? darkColors : lightColors;
+  const styles = getStyles(colors);
+
   const [productCount, setProductCount] = useState(0);
   const [scheduledCount, setScheduledCount] = useState(0);
 
@@ -37,7 +49,7 @@ export default function ProfileScreen() {
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <View style={styles.iconCircle}>
-              <Feather name="box" size={18} color="#D4668F" />
+              <Feather name="box" size={18} color={colors.primary} />
             </View>
 
             <Text style={styles.statNumber}>{productCount}</Text>
@@ -46,7 +58,7 @@ export default function ProfileScreen() {
 
           <View style={styles.statCard}>
             <View style={styles.iconCircle}>
-              <Feather name="calendar" size={18} color="#D4668F" />
+              <Feather name="calendar" size={18} color={colors.primary} />
             </View>
 
             <Text style={styles.statNumber}>{scheduledCount}</Text>
@@ -67,28 +79,48 @@ export default function ProfileScreen() {
         <Text style={styles.sectionTitle}>Skincare Tips</Text>
 
         <View style={styles.tipCard}>
-          <Feather name="check-circle" size={16} color="#D4668F" style={styles.tipIcon} />
+          <Feather
+            name="check-circle"
+            size={16}
+            color={colors.primary}
+            style={styles.tipIcon}
+          />
           <Text style={styles.tipText}>
             Always apply products from thinnest to thickest consistency
           </Text>
         </View>
 
         <View style={styles.tipCard}>
-          <Feather name="check-circle" size={16} color="#D4668F" style={styles.tipIcon} />
+          <Feather
+            name="check-circle"
+            size={16}
+            color={colors.primary}
+            style={styles.tipIcon}
+          />
           <Text style={styles.tipText}>
             Wait 30-60 seconds between applying different products
           </Text>
         </View>
 
         <View style={styles.tipCard}>
-          <Feather name="check-circle" size={16} color="#D4668F" style={styles.tipIcon} />
+          <Feather
+            name="check-circle"
+            size={16}
+            color={colors.primary}
+            style={styles.tipIcon}
+          />
           <Text style={styles.tipText}>
             Sunscreen should be the last step in your morning routine
           </Text>
         </View>
 
         <View style={styles.tipCard}>
-          <Feather name="check-circle" size={16} color="#D4668F" style={styles.tipIcon} />
+          <Feather
+            name="check-circle"
+            size={16}
+            color={colors.primary}
+            style={styles.tipIcon}
+          />
           <Text style={styles.tipText}>
             Consistency is key - stick to your routine for best results
           </Text>
@@ -98,118 +130,119 @@ export default function ProfileScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-  },
+const getStyles = (colors) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  container: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-  },
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  content: {
-    paddingHorizontal: 18,
-    paddingTop: 14,
-    paddingBottom: 28,
-  },
+    content: {
+      paddingHorizontal: 18,
+      paddingTop: 14,
+      paddingBottom: 28,
+    },
 
-  title: {
-    fontSize: 19,
-    fontWeight: "800",
-    color: "#2F2A2D",
-    marginBottom: 16,
-  },
+    title: {
+      fontSize: 19,
+      fontWeight: "800",
+      color: colors.text,
+      marginBottom: 16,
+    },
 
-  statsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 14,
-  },
+    statsRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 14,
+    },
 
-  statCard: {
-    width: "48.2%",
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    borderRadius: 16,
-    paddingVertical: 16,
-    alignItems: "center",
-  },
+    statCard: {
+      width: "48.2%",
+      backgroundColor: colors.card,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 16,
+      paddingVertical: 16,
+      alignItems: "center",
+    },
 
-  iconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: "#FBEAF1",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 10,
-  },
+    iconCircle: {
+      width: 38,
+      height: 38,
+      borderRadius: 19,
+      backgroundColor: colors.softPink,
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 10,
+    },
 
-  statNumber: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: "#2F2A2D",
-    marginBottom: 2,
-  },
+    statNumber: {
+      fontSize: 24,
+      fontWeight: "700",
+      color: colors.text,
+      marginBottom: 2,
+    },
 
-  statLabel: {
-    fontSize: 12,
-    color: "#9A7F89",
-  },
+    statLabel: {
+      fontSize: 12,
+      color: colors.subtext,
+    },
 
-  journeyCard: {
-    backgroundColor: "#FDF0F5",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 18,
-  },
+    journeyCard: {
+      backgroundColor: colors.inputBackground,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 16,
+      padding: 14,
+      marginBottom: 18,
+    },
 
-  journeyTitle: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: "#2F2A2D",
-    marginBottom: 10,
-  },
+    journeyTitle: {
+      fontSize: 15,
+      fontWeight: "700",
+      color: colors.text,
+      marginBottom: 10,
+    },
 
-  journeyText: {
-    fontSize: 13,
-    lineHeight: 22,
-    color: "#8C6978",
-  },
+    journeyText: {
+      fontSize: 13,
+      lineHeight: 22,
+      color: colors.subtext,
+    },
 
-  sectionTitle: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: "#2F2A2D",
-    marginBottom: 12,
-  },
+    sectionTitle: {
+      fontSize: 17,
+      fontWeight: "800",
+      color: colors.text,
+      marginBottom: 12,
+    },
 
-  tipCard: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    marginBottom: 10,
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
+    tipCard: {
+      backgroundColor: colors.card,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 14,
+      paddingVertical: 14,
+      paddingHorizontal: 12,
+      marginBottom: 10,
+      flexDirection: "row",
+      alignItems: "flex-start",
+    },
 
-  tipIcon: {
-    marginTop: 1,
-    marginRight: 10,
-  },
+    tipIcon: {
+      marginTop: 1,
+      marginRight: 10,
+    },
 
-  tipText: {
-    flex: 1,
-    fontSize: 13,
-    lineHeight: 21,
-    color: "#2F2A2D",
-  },
-});
+    tipText: {
+      flex: 1,
+      fontSize: 13,
+      lineHeight: 21,
+      color: colors.text,
+    },
+  });

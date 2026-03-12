@@ -3,11 +3,13 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Animated,
+  useColorScheme,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { lightColors, darkColors } from "../theme/colors";
 import { Feather } from "@expo/vector-icons";
 
 import { db } from "../database/db";

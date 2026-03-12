@@ -3,16 +3,22 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Modal,
+  useColorScheme,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Feather } from "@expo/vector-icons";
 import { db } from "../database/db";
+import { lightColors, darkColors } from "../theme/colors";
 
 export default function ScheduleScreen() {
+  const scheme = useColorScheme();
+  const colors = scheme === "dark" ? darkColors : lightColors;
+  const styles = getStyles(colors);
+
   const days = [
     "Sunday",
     "Monday",
@@ -108,7 +114,7 @@ export default function ScheduleScreen() {
 
                 <View style={styles.sectionRow}>
                   <View style={styles.sectionLabelRow}>
-                    <Feather name="sun" size={14} color="#D4668F" />
+                    <Feather name="sun" size={14} color={colors.primary} />
                     <Text style={styles.sectionTitle}>Morning</Text>
                   </View>
 
@@ -135,7 +141,7 @@ export default function ScheduleScreen() {
 
                 <View style={[styles.sectionRow, styles.sectionSpacing]}>
                   <View style={styles.sectionLabelRow}>
-                    <Feather name="moon" size={14} color="#D4668F" />
+                    <Feather name="moon" size={14} color={colors.primary} />
                     <Text style={styles.sectionTitle}>Evening</Text>
                   </View>
 
@@ -236,193 +242,194 @@ export default function ScheduleScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-  },
+const getStyles = (colors) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  container: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-    paddingHorizontal: 18,
-    paddingTop: 14,
-  },
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      paddingHorizontal: 18,
+      paddingTop: 14,
+    },
 
-  title: {
-    fontSize: 19,
-    fontWeight: "800",
-    color: "#2F2A2D",
-    marginBottom: 16,
-  },
+    title: {
+      fontSize: 19,
+      fontWeight: "800",
+      color: colors.text,
+      marginBottom: 16,
+    },
 
-  scrollContent: {
-    paddingBottom: 24,
-  },
+    scrollContent: {
+      paddingBottom: 24,
+    },
 
-  dayCard: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 14,
-  },
+    dayCard: {
+      backgroundColor: colors.card,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 16,
+      padding: 14,
+      marginBottom: 14,
+    },
 
-  dayTitle: {
-    fontSize: 17,
-    fontWeight: "700",
-    color: "#2F2A2D",
-    marginBottom: 14,
-  },
+    dayTitle: {
+      fontSize: 17,
+      fontWeight: "700",
+      color: colors.text,
+      marginBottom: 14,
+    },
 
-  sectionRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+    sectionRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
 
-  sectionLabelRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
+    sectionLabelRow: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
 
-  sectionTitle: {
-    marginLeft: 6,
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#9A5C72",
-  },
+    sectionTitle: {
+      marginLeft: 6,
+      fontSize: 14,
+      fontWeight: "600",
+      color: colors.subtext,
+    },
 
-  sectionSpacing: {
-    marginTop: 14,
-  },
+    sectionSpacing: {
+      marginTop: 14,
+    },
 
-  plusText: {
-    fontSize: 18,
-    color: "#D4668F",
-    fontWeight: "500",
-  },
+    plusText: {
+      fontSize: 18,
+      color: colors.primary,
+      fontWeight: "500",
+    },
 
-  emptyText: {
-    marginTop: 8,
-    fontSize: 13,
-    color: "#D2A8B6",
-    fontStyle: "italic",
-  },
+    emptyText: {
+      marginTop: 8,
+      fontSize: 13,
+      color: colors.emptyText,
+      fontStyle: "italic",
+    },
 
-  scheduledItem: {
-    marginTop: 8,
-    backgroundColor: "#F8EAF0",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 7,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+    scheduledItem: {
+      marginTop: 8,
+      backgroundColor: colors.softPink,
+      borderRadius: 8,
+      paddingHorizontal: 10,
+      paddingVertical: 7,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
 
-  scheduledItemText: {
-    fontSize: 13,
-    color: "#2F2A2D",
-  },
+    scheduledItemText: {
+      fontSize: 13,
+      color: colors.text,
+    },
 
-  removeText: {
-    fontSize: 16,
-    color: "#C79AAA",
-  },
+    removeText: {
+      fontSize: 16,
+      color: colors.subtext,
+    },
 
-  modalSafeArea: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-  },
+    modalSafeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 12,
-  },
+    modalHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 20,
+      paddingTop: 10,
+      paddingBottom: 12,
+    },
 
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#2F2A2D",
-  },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: "700",
+      color: colors.text,
+    },
 
-  closeText: {
-    fontSize: 24,
-    color: "#2F2A2D",
-  },
+    closeText: {
+      fontSize: 24,
+      color: colors.text,
+    },
 
-  modalBody: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
+    modalBody: {
+      flex: 1,
+      paddingHorizontal: 20,
+    },
 
-  modalLabel: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#9A5C72",
-    marginBottom: 12,
-  },
+    modalLabel: {
+      fontSize: 14,
+      fontWeight: "600",
+      color: colors.subtext,
+      marginBottom: 12,
+    },
 
-  productOption: {
-    backgroundColor: "#FDF0F5",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 10,
-  },
+    productOption: {
+      backgroundColor: colors.inputBackground,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 14,
+      padding: 14,
+      marginBottom: 10,
+    },
 
-  productOptionSelected: {
-    backgroundColor: "#C95D83",
-    borderColor: "#2E6BFF",
-  },
+    productOptionSelected: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
 
-  productOptionName: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#2F2A2D",
-    marginBottom: 4,
-  },
+    productOptionName: {
+      fontSize: 15,
+      fontWeight: "600",
+      color: colors.text,
+      marginBottom: 4,
+    },
 
-  productOptionNameSelected: {
-    color: "#FFFFFF",
-  },
+    productOptionNameSelected: {
+      color: colors.badgeText,
+    },
 
-  productOptionCategory: {
-    fontSize: 13,
-    color: "#9A7F89",
-  },
+    productOptionCategory: {
+      fontSize: 13,
+      color: colors.subtext,
+    },
 
-  productOptionCategorySelected: {
-    color: "#FDE7EF",
-  },
+    productOptionCategorySelected: {
+      color: colors.badgeText,
+    },
 
-  modalFooter: {
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 18,
-    borderTopWidth: 1,
-    borderTopColor: "#F0DDE5",
-    backgroundColor: "#FFF8FB",
-  },
+    modalFooter: {
+      paddingHorizontal: 20,
+      paddingTop: 12,
+      paddingBottom: 18,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      backgroundColor: colors.background,
+    },
 
-  addToScheduleButton: {
-    height: 50,
-    borderRadius: 14,
-    backgroundColor: "#D9A0B5",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    addToScheduleButton: {
+      height: 50,
+      borderRadius: 14,
+      backgroundColor: colors.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
 
-  addToScheduleButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-    fontSize: 15,
-  },
-});
+    addToScheduleButtonText: {
+      color: colors.badgeText,
+      fontWeight: "700",
+      fontSize: 15,
+    },
+  });

@@ -6,18 +6,24 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   Modal,
   ScrollView,
   Image,
+  useColorScheme,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 import { db } from "../database/db";
 import ProductCard from "../components/ProductCard";
+import { lightColors, darkColors } from "../theme/colors";
 
 export default function ProductsScreen() {
+  const scheme = useColorScheme();
+  const colors = scheme === "dark" ? darkColors : lightColors;
+  const styles = getStyles(colors);
+
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
@@ -97,10 +103,10 @@ export default function ProductsScreen() {
         </View>
 
         <View style={styles.searchWrapper}>
-          <Feather name="search" size={16} color="#C7A8B5" />
+          <Feather name="search" size={16} color={colors.placeholder} />
           <TextInput
             placeholder="Search products..."
-            placeholderTextColor="#C7A8B5"
+            placeholderTextColor={colors.placeholder}
             value={search}
             onChangeText={setSearch}
             style={styles.searchInput}
@@ -152,7 +158,7 @@ export default function ProductsScreen() {
               <Text style={styles.label}>Product Name *</Text>
               <TextInput
                 placeholder="e.g., Vitamin C Serum"
-                placeholderTextColor="#C7A8B5"
+                placeholderTextColor={colors.placeholder}
                 value={name}
                 onChangeText={setName}
                 style={styles.input}
@@ -161,7 +167,7 @@ export default function ProductsScreen() {
               <Text style={styles.label}>Brand</Text>
               <TextInput
                 placeholder="e.g., The Ordinary"
-                placeholderTextColor="#C7A8B5"
+                placeholderTextColor={colors.placeholder}
                 value={brand}
                 onChangeText={setBrand}
                 style={styles.input}
@@ -197,7 +203,7 @@ export default function ProductsScreen() {
               <Text style={styles.label}>Usage Instructions</Text>
               <TextInput
                 placeholder="How to use this product..."
-                placeholderTextColor="#C7A8B5"
+                placeholderTextColor={colors.placeholder}
                 value={instructions}
                 onChangeText={setInstructions}
                 style={styles.textArea}
@@ -218,226 +224,228 @@ export default function ProductsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-  },
+const getStyles = (colors) =>
+  StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  container: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-    paddingHorizontal: 18,
-    paddingTop: 14,
-  },
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      paddingHorizontal: 18,
+      paddingTop: 14,
+    },
 
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 14,
-  },
+    headerRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 14,
+    },
 
-  title: {
-    fontSize: 19,
-    fontWeight: "800",
-    color: "#2F2A2D",
-  },
+    title: {
+      fontSize: 19,
+      fontWeight: "800",
+      color: colors.text,
+    },
 
-  addButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#D4668F",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    addButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
 
-  addButtonText: {
-    color: "#FFFFFF",
-    fontSize: 24,
-    lineHeight: 24,
-    fontWeight: "500",
-    marginTop: -2,
-  },
+    addButtonText: {
+      color: colors.badgeText,
+      fontSize: 24,
+      lineHeight: 24,
+      fontWeight: "500",
+      marginTop: -2,
+    },
 
-  searchWrapper: {
-    height: 46,
-    borderRadius: 14,
-    backgroundColor: "#FDF0F5",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    paddingHorizontal: 14,
-    marginBottom: 14,
-    flexDirection: "row",
-    alignItems: "center",
-  },
+    searchWrapper: {
+      height: 46,
+      borderRadius: 14,
+      backgroundColor: colors.inputBackground,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: 14,
+      marginBottom: 14,
+      flexDirection: "row",
+      alignItems: "center",
+    },
 
-  searchInput: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 14,
-    color: "#4A4044",
-  },
+    searchInput: {
+      flex: 1,
+      marginLeft: 8,
+      fontSize: 14,
+      color: colors.text,
+    },
 
-  listContent: {
-    paddingBottom: 24,
-  },
+    listContent: {
+      paddingBottom: 24,
+    },
 
-  modalSafeArea: {
-    flex: 1,
-    backgroundColor: "#FFF8FB",
-  },
+    modalSafeArea: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
 
-  modalHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 12,
-  },
+    modalHeader: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 20,
+      paddingTop: 10,
+      paddingBottom: 12,
+    },
 
-  modalTitle: {
-    fontSize: 19,
-    fontWeight: "800",
-    color: "#2F2A2D",
-  },
+    modalTitle: {
+      fontSize: 19,
+      fontWeight: "800",
+      color: colors.text,
+    },
 
-  closeButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: "#4A75D1",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    closeButton: {
+      width: 30,
+      height: 30,
+      borderRadius: 8,
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.card,
+    },
 
-  closeButtonText: {
-    fontSize: 16,
-    color: "#2F2A2D",
-    fontWeight: "600",
-  },
+    closeButtonText: {
+      fontSize: 16,
+      color: colors.text,
+      fontWeight: "600",
+    },
 
-  modalContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 24,
-  },
+    modalContent: {
+      paddingHorizontal: 20,
+      paddingBottom: 24,
+    },
 
-  photoBox: {
-    height: 190,
-    borderRadius: 16,
-    borderWidth: 1.5,
-    borderStyle: "dashed",
-    borderColor: "#E8C9D5",
-    backgroundColor: "#FDF0F5",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 18,
-    overflow: "hidden",
-  },
+    photoBox: {
+      height: 190,
+      borderRadius: 16,
+      borderWidth: 1.5,
+      borderStyle: "dashed",
+      borderColor: colors.border,
+      backgroundColor: colors.inputBackground,
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: 18,
+      overflow: "hidden",
+    },
 
-  previewImage: {
-    width: "100%",
-    height: "100%",
-  },
+    previewImage: {
+      width: "100%",
+      height: "100%",
+    },
 
-  photoPlus: {
-    fontSize: 32,
-    color: "#C9A7B4",
-    marginBottom: 4,
-  },
+    photoPlus: {
+      fontSize: 32,
+      color: colors.placeholder,
+      marginBottom: 4,
+    },
 
-  photoText: {
-    fontSize: 15,
-    color: "#C09AAA",
-  },
+    photoText: {
+      fontSize: 15,
+      color: colors.placeholder,
+    },
 
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#8D596D",
-    marginBottom: 8,
-    marginTop: 4,
-  },
+    label: {
+      fontSize: 14,
+      fontWeight: "600",
+      color: colors.subtext,
+      marginBottom: 8,
+      marginTop: 4,
+    },
 
-  input: {
-    height: 46,
-    borderRadius: 14,
-    backgroundColor: "#FDF0F5",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    paddingHorizontal: 14,
-    fontSize: 14,
-    color: "#4A4044",
-    marginBottom: 16,
-  },
+    input: {
+      height: 46,
+      borderRadius: 14,
+      backgroundColor: colors.inputBackground,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: 14,
+      fontSize: 14,
+      color: colors.text,
+      marginBottom: 16,
+    },
 
-  categoryRow: {
-    paddingBottom: 8,
-    marginBottom: 14,
-  },
+    categoryRow: {
+      paddingBottom: 8,
+      marginBottom: 14,
+    },
 
-  categoryOption: {
-    paddingHorizontal: 15,
-    paddingVertical: 9,
-    borderRadius: 999,
-    backgroundColor: "#F7EDF1",
-    borderWidth: 1,
-    borderColor: "#EBD6DE",
-    marginRight: 10,
-  },
+    categoryOption: {
+      paddingHorizontal: 15,
+      paddingVertical: 9,
+      borderRadius: 999,
+      backgroundColor: colors.softPink,
+      borderWidth: 1,
+      borderColor: colors.border,
+      marginRight: 10,
+    },
 
-  categoryOptionActive: {
-    backgroundColor: "#D96B95",
-    borderColor: "#D96B95",
-  },
+    categoryOptionActive: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
 
-  categoryOptionText: {
-    color: "#6A5960",
-    fontWeight: "500",
-    fontSize: 13,
-  },
+    categoryOptionText: {
+      color: colors.text,
+      fontWeight: "500",
+      fontSize: 13,
+    },
 
-  categoryOptionTextActive: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-  },
+    categoryOptionTextActive: {
+      color: colors.badgeText,
+      fontWeight: "700",
+    },
 
-  textArea: {
-    minHeight: 100,
-    borderRadius: 14,
-    backgroundColor: "#FDF0F5",
-    borderWidth: 1,
-    borderColor: "#F1D5E0",
-    paddingHorizontal: 14,
-    paddingTop: 14,
-    fontSize: 14,
-    color: "#4A4044",
-    marginBottom: 20,
-  },
+    textArea: {
+      minHeight: 100,
+      borderRadius: 14,
+      backgroundColor: colors.inputBackground,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: 14,
+      paddingTop: 14,
+      fontSize: 14,
+      color: colors.text,
+      marginBottom: 20,
+    },
 
-  footer: {
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 18,
-    borderTopWidth: 1,
-    borderTopColor: "#F0DDE5",
-    backgroundColor: "#FFF8FB",
-  },
+    footer: {
+      paddingHorizontal: 20,
+      paddingTop: 12,
+      paddingBottom: 18,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      backgroundColor: colors.background,
+    },
 
-  primaryButton: {
-    height: 50,
-    borderRadius: 14,
-    backgroundColor: "#D9A0B5",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+    primaryButton: {
+      height: 50,
+      borderRadius: 14,
+      backgroundColor: colors.primary,
+      alignItems: "center",
+      justifyContent: "center",
+    },
 
-  primaryButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "700",
-    fontSize: 15,
-  },
-});
+    primaryButtonText: {
+      color: colors.badgeText,
+      fontWeight: "700",
+      fontSize: 15,
+    },
+  });
