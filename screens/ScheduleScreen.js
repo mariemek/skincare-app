@@ -13,6 +13,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { db } from "../database/db";
 import { lightColors, darkColors } from "../theme/colors";
+import {
+  saveScheduleToFirestore,
+  deleteScheduleFromFirestore,
+} from "../services/firestoreService";
 
 export default function ScheduleScreen() {
   const scheme = useColorScheme();
@@ -48,7 +52,8 @@ export default function ScheduleScreen() {
   };
 
   const loadSchedule = () => {
-    db.getAllAsync(`
+    db.getAllAsync(
+      `
       SELECT
         schedule.id,
         schedule.day,
@@ -59,7 +64,8 @@ export default function ScheduleScreen() {
       FROM schedule
       JOIN products ON products.id = schedule.productId
       ORDER BY schedule.id ASC
-    `).then((result) => {
+    `,
+    ).then((result) => {
       setScheduleItems(result);
     });
   };
@@ -74,24 +80,52 @@ export default function ScheduleScreen() {
   const addToSchedule = async () => {
     if (!selectedProductId) return;
 
-    await db.runAsync(
-      "INSERT INTO schedule (day,timeOfDay,productId) VALUES (?,?,?)",
-      [selectedDay, selectedTime, selectedProductId]
-    );
+    try {
+      const newScheduleItem = {
+        id: Date.now(),
+        day: selectedDay,
+        timeOfDay: selectedTime,
+        productId: selectedProductId,
+        createdAt: new Date().toISOString(),
+      };
 
-    setShowModal(false);
-    setSelectedProductId(null);
-    loadSchedule();
+      await db.runAsync(
+        "INSERT INTO schedule (id, day, timeOfDay, productId) VALUES (?, ?, ?, ?)",
+        [
+          newScheduleItem.id,
+          newScheduleItem.day,
+          newScheduleItem.timeOfDay,
+          newScheduleItem.productId,
+        ],
+      );
+
+      await saveScheduleToFirestore(newScheduleItem);
+
+      setShowModal(false);
+      setSelectedProductId(null);
+      loadSchedule();
+
+      console.log("Schedule saved locally and in Firestore");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const removeScheduledItem = async (id) => {
-    await db.runAsync("DELETE FROM schedule WHERE id = ?", [id]);
-    loadSchedule();
+    try {
+      await db.runAsync("DELETE FROM schedule WHERE id = ?", [id]);
+
+      await deleteScheduleFromFirestore(id);
+
+      loadSchedule();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const getItemsForSection = (day, timeOfDay) => {
     return scheduleItems.filter(
-      (item) => item.day === day && item.timeOfDay === timeOfDay
+      (item) => item.day === day && item.timeOfDay === timeOfDay,
     );
   };
 
@@ -118,7 +152,9 @@ export default function ScheduleScreen() {
                     <Text style={styles.sectionTitle}>Morning</Text>
                   </View>
 
-                  <TouchableOpacity onPress={() => openAddModal(day, "morning")}>
+                  <TouchableOpacity
+                    onPress={() => openAddModal(day, "morning")}
+                  >
                     <Text style={styles.plusText}>+</Text>
                   </TouchableOpacity>
                 </View>
@@ -145,7 +181,9 @@ export default function ScheduleScreen() {
                     <Text style={styles.sectionTitle}>Evening</Text>
                   </View>
 
-                  <TouchableOpacity onPress={() => openAddModal(day, "evening")}>
+                  <TouchableOpacity
+                    onPress={() => openAddModal(day, "evening")}
+                  >
                     <Text style={styles.plusText}>+</Text>
                   </TouchableOpacity>
                 </View>

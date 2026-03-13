@@ -18,6 +18,10 @@ import * as ImagePicker from "expo-image-picker";
 import { db } from "../database/db";
 import ProductCard from "../components/ProductCard";
 import { lightColors, darkColors } from "../theme/colors";
+import {
+  saveProductToFirestore,
+  deleteProductFromFirestore,
+} from "../services/firestoreService";
 
 export default function ProductsScreen() {
   const scheme = useColorScheme();
@@ -57,23 +61,54 @@ export default function ProductsScreen() {
   const addProduct = async () => {
     if (!name.trim() || !brand.trim() || !category.trim()) return;
 
-    await db.runAsync(
-      "INSERT INTO products (name,brand,category,image) VALUES (?,?,?,?)",
-      [name, brand, category, image]
-    );
+    try {
+      const newProduct = {
+        id: Date.now(),
+        name,
+        brand,
+        category,
+        image,
+        instructions,
+        createdAt: new Date().toISOString(),
+      };
 
-    loadProducts();
-    setName("");
-    setBrand("");
-    setCategory("Cleanser");
-    setImage(null);
-    setInstructions("");
-    setShowForm(false);
+      await db.runAsync(
+        "INSERT INTO products (id, name, brand, category, image) VALUES (?, ?, ?, ?, ?)",
+        [
+          newProduct.id,
+          newProduct.name,
+          newProduct.brand,
+          newProduct.category,
+          newProduct.image,
+        ],
+      );
+
+      await saveProductToFirestore(newProduct);
+
+      loadProducts();
+      setName("");
+      setBrand("");
+      setCategory("Cleanser");
+      setImage(null);
+      setInstructions("");
+      setShowForm(false);
+
+      console.log("Product saved locally and in Firestore");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const deleteProduct = async (id) => {
-    await db.runAsync("DELETE FROM products WHERE id = ?", [id]);
-    loadProducts();
+    try {
+      await db.runAsync("DELETE FROM products WHERE id = ?", [id]);
+
+      await deleteProductFromFirestore(id);
+
+      loadProducts();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const pickImage = async () => {
@@ -85,7 +120,7 @@ export default function ProductsScreen() {
   };
 
   const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
+    p.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
@@ -213,7 +248,10 @@ export default function ProductsScreen() {
             </ScrollView>
 
             <View style={styles.footer}>
-              <TouchableOpacity style={styles.primaryButton} onPress={addProduct}>
+              <TouchableOpacity
+                style={styles.primaryButton}
+                onPress={addProduct}
+              >
                 <Text style={styles.primaryButtonText}>Add Product</Text>
               </TouchableOpacity>
             </View>

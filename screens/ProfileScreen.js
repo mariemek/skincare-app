@@ -5,12 +5,16 @@ import {
   StyleSheet,
   ScrollView,
   useColorScheme,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 
 import { db } from "../database/db";
 import { lightColors, darkColors } from "../theme/colors";
+
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/config";
 
 export default function ProfileScreen() {
   const scheme = useColorScheme();
@@ -35,6 +39,15 @@ export default function ProfileScreen() {
 
     setProductCount(productResult?.count ?? 0);
     setScheduledCount(scheduleResult?.count ?? 0);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -125,6 +138,11 @@ export default function ProfileScreen() {
             Consistency is key - stick to your routine for best results
           </Text>
         </View>
+
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Feather name="log-out" size={16} color="#fff" />
+          <Text style={styles.logoutText}>Log Out</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -244,5 +262,22 @@ const getStyles = (colors) =>
       fontSize: 13,
       lineHeight: 21,
       color: colors.text,
+    },
+
+    logoutButton: {
+      marginTop: 20,
+      backgroundColor: colors.primary,
+      borderRadius: 14,
+      paddingVertical: 14,
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
+    },
+
+    logoutText: {
+      color: "#fff",
+      fontSize: 14,
+      fontWeight: "600",
+      marginLeft: 8,
     },
   });
