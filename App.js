@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
 
 import Tabs from "./navigation/Tabs";
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 import { syncUserDataToSQLite } from "./services/syncUserData";
+
+const Stack = createNativeStackNavigator();
+
+function AuthStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -34,7 +47,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {user ? <Tabs /> : <LoginScreen />}
+      {user ? <Tabs /> : <AuthStack />}
     </NavigationContainer>
   );
 }

@@ -4,35 +4,32 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Alert,
 } from "react-native";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 
 export default function LoginScreen({ navigation }) {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const loginUser = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Missing fields", "Please enter your email and password.");
+      return;
+    }
+
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      console.log("User logged in:", userCredential.user.uid);
-
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.log(error.message);
+      Alert.alert("Login failed", error.message);
     }
   };
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.title}>Login</Text>
 
       <TextInput
@@ -40,6 +37,8 @@ export default function LoginScreen({ navigation }) {
         value={email}
         onChangeText={setEmail}
         style={styles.input}
+        autoCapitalize="none"
+        keyboardType="email-address"
       />
 
       <TextInput
@@ -55,27 +54,23 @@ export default function LoginScreen({ navigation }) {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-        <Text style={styles.link}>
-          Don't have an account? Register
-        </Text>
+        <Text style={styles.link}>Don't have an account? Register</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 24
+    padding: 24,
   },
 
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   input: {
@@ -83,24 +78,23 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 12,
     marginBottom: 15,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   button: {
     backgroundColor: "#000",
     padding: 14,
     borderRadius: 8,
-    alignItems: "center"
+    alignItems: "center",
   },
 
   buttonText: {
     color: "#fff",
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   link: {
     marginTop: 20,
-    textAlign: "center"
-  }
-
+    textAlign: "center",
+  },
 });

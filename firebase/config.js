@@ -1,13 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  apiKey: "AIzaSyCWpNuAnDOA63W-Dhb4SDqyDdVDuyjWhps",
+  authDomain: "skincare-app-70195.firebaseapp.com",
+  projectId: "skincare-app-70195",
+  storageBucket: "skincare-app-70195.firebasestorage.app",
+  messagingSenderId: "559100800370",
+  appId: "1:559100800370:web:b1315a23507370036081eb"
 };
 
 const app = initializeApp(firebaseConfig);

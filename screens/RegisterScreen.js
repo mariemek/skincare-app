@@ -1,31 +1,36 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from "react-native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 
 export default function RegisterScreen({ navigation }) {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const registerUser = async () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert("Missing fields", "Please enter your email and password.");
+      return;
+    }
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      console.log("User created:", userCredential.user.uid);
-
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert("Success", "Account created successfully.");
+      navigation.navigate("Login");
     } catch (error) {
-      console.log(error.message);
+      Alert.alert("Registration failed", error.message);
     }
   };
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.title}>Create Account</Text>
 
       <TextInput
@@ -33,6 +38,8 @@ export default function RegisterScreen({ navigation }) {
         value={email}
         onChangeText={setEmail}
         style={styles.input}
+        autoCapitalize="none"
+        keyboardType="email-address"
       />
 
       <TextInput
@@ -50,7 +57,6 @@ export default function RegisterScreen({ navigation }) {
       <TouchableOpacity onPress={() => navigation.navigate("Login")}>
         <Text style={styles.link}>Already have an account? Login</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
@@ -59,13 +65,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 24
+    padding: 24,
   },
 
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   input: {
@@ -73,23 +79,23 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 12,
     marginBottom: 15,
-    borderRadius: 8
+    borderRadius: 8,
   },
 
   button: {
     backgroundColor: "#000",
     padding: 14,
     borderRadius: 8,
-    alignItems: "center"
+    alignItems: "center",
   },
 
   buttonText: {
     color: "#fff",
-    fontWeight: "600"
+    fontWeight: "600",
   },
 
   link: {
     marginTop: 20,
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
